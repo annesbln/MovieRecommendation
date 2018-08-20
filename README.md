@@ -1,3 +1,3 @@
-MovieRecommendation
+# MovieRecommendation
 This program was part of my final assignment in the "Java Programming and Software Engineering Specialization", an online course authorized by Duke University and offered through Coursera.
 The MovieRecommendation is a recommendation engine by finding users in the database (/data/ratings.csv) that have similar ratings and weighting their input to provide a more personal recommendation for the users of the program. The user can request ratings of movies (/data/ratedmoviesfull.csv) from those he know, run the program and give them recommendations tailored to the own interests and tastes. In addition, the program consists of many filter options to select particular movies, e.g. movie length, year of release, director or genre.
