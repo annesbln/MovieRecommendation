@@ -1,5 +1,4 @@
-// An immutable passive data object (PDO) to represent data of a movie
-
+// An immutable passive data object (PDO) to represent item data
 public class Movie {
     private String id;
     private String title;
@@ -19,7 +18,7 @@ public class Movie {
     }
 
     public Movie (String anID, String aTitle, String aYear, String theGenres, String aDirector,
-    String aCountry, int theMinutes, String aPoster) {
+    String aCountry, String aPoster, int theMinutes) {
         // just in case data file contains extra whitespace
         id = anID.trim();
         title = aTitle.trim();

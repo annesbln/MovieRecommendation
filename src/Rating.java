@@ -1,19 +1,18 @@
 // An immutable passive data object (PDO) to represent the rating data
-
 public class Rating implements Comparable<Rating> {
-    private String myID;
+    private String item;
     private double value;
 
-    public Rating (String id, double aValue) {
-    	myID = id;
+    public Rating (String anItem, double aValue) {
+        item = anItem;
         value = aValue;
     }
 
-    // Returns the id of the item being rated
-    public String getID () {
-        return myID;
+    // Returns item being rated
+    public String getItem () {
+        return item;
     }
-	
+
     // Returns the value of this rating (as a number so it can be used in calculations)
     public double getValue () {
         return value;
@@ -21,7 +20,7 @@ public class Rating implements Comparable<Rating> {
 
     // Returns a string of all the rating information
     public String toString () {
-        return "[" + getID() + ", " + getValue() + "]";
+        return "[" + getItem() + ", " + getValue() + "]";
     }
 
     public int compareTo(Rating other) {
@@ -30,6 +29,4 @@ public class Rating implements Comparable<Rating> {
         
         return 0;
     }
-
-
 }

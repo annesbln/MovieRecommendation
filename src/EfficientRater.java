@@ -2,11 +2,11 @@ import java.util.*;
 
 public class EfficientRater implements Rater {
     private String myID;
-    private HashMap<String, Rating> myRatings;
+    private HashMap<String,Rating> myRatings;   //String is movieID!
 
     public EfficientRater(String id) {
         myID = id;
-        myRatings = new HashMap<String, Rating>();
+        myRatings = new HashMap<String,Rating>();
     }
 
     public void addRating(String item, double rating) {
@@ -14,31 +14,15 @@ public class EfficientRater implements Rater {
     }
 
     public boolean hasRating(String item) {
-        if (myRatings.containsKey(item)) {
-        	return true;
-        } else {
-        	return false;
-        }
+        return myRatings.containsKey(item);
     }
 
     public String getID() {
         return myID;
     }
-    
-    public ArrayList<Rating> getMyRatings() {
-    	ArrayList<Rating> list = new ArrayList<Rating>();
-    	for (String id: myRatings.keySet()) {
-    		list.add(myRatings.get(id));
-    	}
-        return list;
-    }
 
     public double getRating(String item) {
-        if (myRatings.containsKey(item)) {
-        	return myRatings.get(item).getValue();
-        }
-        
-        return -1;
+        return myRatings.get(item).getValue();
     }
 
     public int numRatings() {
@@ -47,14 +31,9 @@ public class EfficientRater implements Rater {
 
     public ArrayList<String> getItemsRated() {
         ArrayList<String> list = new ArrayList<String>();
-        for(String id: myRatings.keySet()){
-            list.add(id);
+        for(String movieID: myRatings.keySet()){
+            list.add(movieID);
         }
         return list;
-    }
-    
-    public String toString () {
-    	String result = "Rater [rater_id=" + myID + ", myRatings="+ myRatings.toString()+"]";
-    	return result;
     }
 }

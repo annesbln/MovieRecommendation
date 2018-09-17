@@ -3,82 +3,82 @@ import java.util.*;
 public class MovieDatabase {
     private static HashMap<String, Movie> ourMovies;
 
-    private static void initialize() {
-        if (getOurMovies() == null) {
-            setOurMovies(new HashMap<String,Movie>());
-            loadMovies("data/ratedmoviesfull.csv");
-        }
-    }
-    
     public static void initialize(String moviefile) {
-        if (getOurMovies() == null) {
-            setOurMovies(new HashMap<String,Movie>());
-            loadMovies(moviefile);
+        if (ourMovies == null) {
+            ourMovies = new HashMap<String,Movie>();
+            loadMovies("data/" + moviefile);
         }
     }
 
+    private static void initialize() {
+        if (ourMovies == null) {
+            ourMovies = new HashMap<String,Movie>();
+            loadMovies("data/ratedmoviesfull.csv");
+        }
+    }	
+
 	
     private static void loadMovies(String filename) {
-        FileLoader fl = new FileLoader();
-        ArrayList<Movie> list = fl.loadMovies(filename);
+        FileLoader fr = new FileLoader();
+        ArrayList<Movie> list = fr.loadMovies(filename);
         for (Movie m : list) {
-            getOurMovies().put(m.getID(), m);
+            ourMovies.put(m.getID(), m);
         }
     }
 
     public static boolean containsID(String id) {
         initialize();
-        return getOurMovies().containsKey(id);
+        return ourMovies.containsKey(id);
     }
 
     public static int getYear(String id) {
         initialize();
-        return getOurMovies().get(id).getYear();
+        return ourMovies.get(id).getYear();
     }
 
     public static String getGenres(String id) {
         initialize();
-        return getOurMovies().get(id).getGenres();
+        return ourMovies.get(id).getGenres();
     }
 
     public static String getTitle(String id) {
         initialize();
-        return getOurMovies().get(id).getTitle();
+        return ourMovies.get(id).getTitle();
     }
 
     public static Movie getMovie(String id) {
         initialize();
-        return getOurMovies().get(id);
+        return ourMovies.get(id);
     }
 
     public static String getPoster(String id) {
         initialize();
-        return getOurMovies().get(id).getPoster();
+        return ourMovies.get(id).getPoster();
     }
 
     public static int getMinutes(String id) {
         initialize();
-        return getOurMovies().get(id).getMinutes();
+        return ourMovies.get(id).getMinutes();
     }
 
     public static String getCountry(String id) {
         initialize();
-        return getOurMovies().get(id).getCountry();
+        return ourMovies.get(id).getCountry();
     }
 
     public static String getDirector(String id) {
         initialize();
-        return getOurMovies().get(id).getDirector();
+        return ourMovies.get(id).getDirector();
     }
 
     public static int size() {
-        return getOurMovies().size();
+        return ourMovies.size();
     }
 
     public static ArrayList<String> filterBy(Filter f) {
         initialize();
         ArrayList<String> list = new ArrayList<String>();
-        for(String id : getOurMovies().keySet()) {
+        for(String id : ourMovies.keySet()) {
             if (f.satisfies(id)) {
                 list.add(id);
             }
@@ -86,13 +86,5 @@ public class MovieDatabase {
         
         return list;
     }
-
-	public static HashMap<String, Movie> getOurMovies() {
-		return ourMovies;
-	}
-
-	public static void setOurMovies(HashMap<String, Movie> ourMovies) {
-		MovieDatabase.ourMovies = ourMovies;
-	}
 
 }

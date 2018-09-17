@@ -1,11 +1,21 @@
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.Random;
 
 public class StartMovieRecommendation {
 	
 	
 	public static void main(String[] args) {
+		RecommendationRunner rr = new RecommendationRunner();
+		rr.getItemsToRate();
+		
+		String raterfilename= "data\\ratings.csv";
+		RaterDatabase.initialize(raterfilename);
+		ArrayList<Rater> totalRaterList = RaterDatabase.getRaters();
+		Random random = new Random();
+		String randomRaterId = totalRaterList.get(random.nextInt(totalRaterList.size())).getID();
+		rr.printRecommendationsFor(randomRaterId);
+		
 		System.out.println("----------------------------printAverageRatings()---------------------------------------");
 		printAverageRatings();
 		System.out.println("----------------------------printSimilarRatings()---------------------------------------");
@@ -29,17 +39,16 @@ public class StartMovieRecommendation {
 		String moviefilename= "data\\ratedmoviesfull.csv";
 		RaterDatabase.initialize(raterfilename);
 		MovieDatabase.initialize(moviefilename);
-		RatingsCalculator rc = new RatingsCalculator();
+		RatingCalculator rc = new RatingCalculator();
 		System.out.println("Number of raters: "+RaterDatabase.size());
 		System.out.println("Number of movies: "+MovieDatabase.size());
 		int minNumOfRatings = 35;
 		ArrayList<Rating> list = rc.getAverageRatings(minNumOfRatings);
-		HashMap<String,Integer> movieCountList = rc.getMovieCountMap();
 		System.out.println("Number of movies with at least "+minNumOfRatings+" raters: "+list.size());
 		Collections.sort(list);
 		int count =1;
 		for (Rating r: list) {
-			System.out.println(count+": Rating: "+r+", num of Ratings: "+movieCountList.get(r.getID())+", movie title: "+ MovieDatabase.getTitle(r.getID()));
+			System.out.println(count+": Rating: "+r+", movie title: "+ MovieDatabase.getTitle(r.getItem()));
 			count++;
 		}
 	}
@@ -52,17 +61,16 @@ public class StartMovieRecommendation {
 		String moviefilename= "data\\ratedmoviesfull.csv";
 		RaterDatabase.initialize(raterfilename);
 		MovieDatabase.initialize(moviefilename);
-		RatingsCalculator rc = new RatingsCalculator();
+		RatingCalculator rc = new RatingCalculator();
 		
 		String raterID = "71";
 		int minNumOfRatings = 5;
 		int numSimilarRaters = 20;
 		ArrayList<Rating> list = rc.getSimilarRatings(raterID, numSimilarRaters, minNumOfRatings);
-		HashMap<String,Integer> movieCountList = rc.getMovieCountMap();
 		System.out.println("The recommended movies and their similarityRatings are:");
 		int count = 1;
 		for (Rating r: list) {
-			System.out.println(count+": Rating: "+r+", year: "+MovieDatabase.getYear(r.getID())+", num of Ratings: "+movieCountList.get(r.getID())+", genre: "+MovieDatabase.getGenres(r.getID())+", movie title: "+ MovieDatabase.getTitle(r.getID()));
+			System.out.println(count+": Rating: "+r+", year: "+MovieDatabase.getYear(r.getItem())+", genre: "+MovieDatabase.getGenres(r.getItem())+", movie title: "+ MovieDatabase.getTitle(r.getItem()));
 			count++;
 		}
 	}
@@ -75,7 +83,7 @@ public class StartMovieRecommendation {
 		String moviefilename= "data\\ratedmoviesfull.csv";
 		RaterDatabase.initialize(raterfilename);
 		MovieDatabase.initialize(moviefilename);
-		RatingsCalculator rc = new RatingsCalculator();
+		RatingCalculator rc = new RatingCalculator();
 
 		
 		String id = "964";
@@ -84,11 +92,10 @@ public class StartMovieRecommendation {
 		String genre = "Mystery";
 		GenreFilter filter = new GenreFilter(genre);
 		ArrayList<Rating> list = rc.getSimilarRatingsByFilter(id, numSimilarRaters, minNumOfRatings, filter);
-		HashMap<String,Integer> movieCountList = rc.getMovieCountMap();
 		System.out.println("The recommended movies and their similarityRatings are:");
 		int count = 1;
 		for (Rating r: list) {
-			System.out.println(count+": Rating: "+r+", year: "+MovieDatabase.getYear(r.getID())+", num of Ratings: "+movieCountList.get(r.getID())+", genre: "+MovieDatabase.getGenres(r.getID())+", movie title: "+ MovieDatabase.getTitle(r.getID()));
+			System.out.println(count+": Rating: "+r+", year: "+MovieDatabase.getYear(r.getItem())+", genre: "+MovieDatabase.getGenres(r.getItem())+", movie title: "+ MovieDatabase.getTitle(r.getItem()));
 			count++;
 		}
 		
@@ -102,7 +109,7 @@ public class StartMovieRecommendation {
 		String moviefilename= "data\\ratedmoviesfull.csv";
 		RaterDatabase.initialize(raterfilename);
 		MovieDatabase.initialize(moviefilename);
-		RatingsCalculator rc = new RatingsCalculator();
+		RatingCalculator rc = new RatingCalculator();
 		System.out.println("Number of ratings: "+RaterDatabase.size());
 		System.out.println("Number of movies: "+MovieDatabase.size());
 		
@@ -115,12 +122,11 @@ public class StartMovieRecommendation {
 		filters.addFilter(genreFilter);
 		filters.addFilter(yearFilter);
 		ArrayList<Rating> list = rc.getAverageRatingsByFilter(minNumOfRatings, filters);
-		HashMap<String,Integer> movieCountList = rc.getMovieCountMap();
 		int count =0;
 		System.out.println("There are "+list.size()+" movies having "+minNumOfRatings+" or more ratings.");
 		count =1;
 		for (Rating r: list) {
-			System.out.println(count+": Rating: "+r+", num of Ratings: "+movieCountList.get(r.getID())+", year: "+MovieDatabase.getYear(r.getID())+", genre: "+MovieDatabase.getGenres(r.getID())+", movie title: "+ MovieDatabase.getTitle(r.getID()));
+			System.out.println(count+": Rating: "+r+", year: "+MovieDatabase.getYear(r.getItem())+", genre: "+MovieDatabase.getGenres(r.getItem())+", movie title: "+ MovieDatabase.getTitle(r.getItem()));
 			count++;
 		}
 	}
@@ -133,7 +139,7 @@ public class StartMovieRecommendation {
 		String moviefilename= "data\\ratedmoviesfull.csv";
 		RaterDatabase.initialize(raterfilename);
 		MovieDatabase.initialize(moviefilename);
-		RatingsCalculator rc = new RatingsCalculator();
+		RatingCalculator rc = new RatingCalculator();
 
 		
 		String raterID = "120";
@@ -142,14 +148,13 @@ public class StartMovieRecommendation {
 		String director = "Clint Eastwood,J.J. Abrams,Alfred Hitchcock,Sydney Pollack,David Cronenberg,Oliver Stone,Mike Leigh";
 		DirectorsFilter filter = new DirectorsFilter(director);
 		ArrayList<Rating> list = rc.getSimilarRatingsByFilter(raterID, numSimilarRaters, minNumOfRatings, filter);
-		HashMap<String,Integer> movieCountList = rc.getMovieCountMap();
 		System.out.println("The recommended movies and their similarityRatings are:");
 		if (list.isEmpty()) {
 			System.out.println("There where no Movies found!");
 		}
 		int count = 1;
 		for (Rating r: list) {
-			System.out.println(count+": Rating: "+r+", year: "+MovieDatabase.getYear(r.getID())+", num of Ratings: "+movieCountList.get(r.getID())+", director: "+MovieDatabase.getDirector(r.getID())+", movie title: "+ MovieDatabase.getTitle(r.getID()));
+			System.out.println(count+": Rating: "+r+", year: "+MovieDatabase.getYear(r.getItem())+", director: "+MovieDatabase.getDirector(r.getItem())+", movie title: "+ MovieDatabase.getTitle(r.getItem()));
 			count++;
 		}
 	}
@@ -163,7 +168,7 @@ public class StartMovieRecommendation {
 		String moviefilename= "data\\ratedmoviesfull.csv";
 		RaterDatabase.initialize(raterfilename);
 		MovieDatabase.initialize(moviefilename);
-		RatingsCalculator rc = new RatingsCalculator();
+		RatingCalculator rc = new RatingCalculator();
 
 		
 		String raterID = "168";
@@ -178,14 +183,13 @@ public class StartMovieRecommendation {
 		allFilter.addFilter(genreFilter);
 		allFilter.addFilter(minutesFilter );
 		ArrayList<Rating> list = rc.getSimilarRatingsByFilter(raterID, numSimilarRaters, minNumOfRatings, allFilter);
-		HashMap<String,Integer> movieCountList = rc.getMovieCountMap();
 		System.out.println("The recommended movies and their similarityRatings are:");
 		if (list.isEmpty()) {
 			System.out.println("There where no Movies found!");
 		}
 		int count = 1;
 		for (Rating r: list) {
-			System.out.println(count+": Rating: "+r+", year: "+MovieDatabase.getYear(r.getID())+", num of Ratings: "+movieCountList.get(r.getID())+", director: "+MovieDatabase.getDirector(r.getID())+", movie title: "+ MovieDatabase.getTitle(r.getID()));
+			System.out.println(count+": Rating: "+r+", year: "+MovieDatabase.getYear(r.getItem())+", director: "+MovieDatabase.getDirector(r.getItem())+", movie title: "+ MovieDatabase.getTitle(r.getItem()));
 			count++;
 		}
 	}
@@ -199,7 +203,7 @@ public class StartMovieRecommendation {
 		String moviefilename= "data\\ratedmoviesfull.csv";
 		RaterDatabase.initialize(raterfilename);
 		MovieDatabase.initialize(moviefilename);
-		RatingsCalculator rc = new RatingsCalculator();
+		RatingCalculator rc = new RatingCalculator();
 
 		
 		String raterID = "314";
@@ -214,14 +218,13 @@ public class StartMovieRecommendation {
 		allFilter.addFilter(yearFilter);
 		allFilter.addFilter(minutesFilter );
 		ArrayList<Rating> list = rc.getSimilarRatingsByFilter(raterID, numSimilarRaters, minNumOfRatings, allFilter);
-		HashMap<String,Integer> movieCountList = rc.getMovieCountMap();
 		System.out.println("The recommended movies and their similarityRatings are:");
 		if (list.isEmpty()) {
 			System.out.println("There where no Movies found!");
 		}
 		int count = 1;
 		for (Rating r: list) {
-			System.out.println(count+": Rating: "+r+", year: "+MovieDatabase.getYear(r.getID())+", num of Ratings: "+movieCountList.get(r.getID())+", director: "+MovieDatabase.getDirector(r.getID())+", movie title: "+ MovieDatabase.getTitle(r.getID()));
+			System.out.println(count+": Rating: "+r+", year: "+MovieDatabase.getYear(r.getItem())+", director: "+MovieDatabase.getDirector(r.getItem())+", movie title: "+ MovieDatabase.getTitle(r.getItem()));
 			count++;
 		}
 	}
